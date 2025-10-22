@@ -38,3 +38,21 @@ document.querySelectorAll('nav a').forEach(anchor => {
         }
     });
 });
+
+// Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would typically send the data to a server
+            // For now, we'll just show an alert
+            alert(`Thank you ${name}! Your message has been received. We'll get back to you at ${email} soon.`);
+            
+            // Reset the form
+            this.reset();
+        });
