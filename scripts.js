@@ -39,20 +39,29 @@ document.querySelectorAll('nav a').forEach(anchor => {
     });
 });
 
-// Contact form submission
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            // Here you would typically send the data to a server
-            // For now, we'll just show an alert
-            alert(`Thank you ${name}! Your message has been received. We'll get back to you at ${email} soon.`);
-            
-            // Reset the form
-            this.reset();
+emailjs.init('Cju5bQaKBUY1yjmSi');
+
+// Contact form
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    
+    // Send email using EmailJS
+    emailjs.sendForm('service_v3zdrk4', 'template_iv6dves', this)
+        .then(function() {
+            alert('Thank you! Your message has been sent successfully.');
+            document.getElementById('contactForm').reset();
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }, function(error) {
+            alert('Failed to send message. Please try again.');
+            console.log('EmailJS error:', error);
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
         });
+});
