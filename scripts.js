@@ -27,9 +27,6 @@ document.querySelectorAll('nav a').forEach(anchor => {
     if(targetId === 'schedule.html') {
         window.location.href = targetId;
         return;
-    } else if (targetId === 'apply.html') {
-        window.location.href = targetId;
-        return;
     }
                 
     const targetElement = document.querySelector(targetId);
