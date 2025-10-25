@@ -41,27 +41,40 @@ document.querySelectorAll('nav a').forEach(anchor => {
 
 emailjs.init('Cju5bQaKBUY1yjmSi');
 
-// Contact form
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+// Contact form submission with Web3Forms
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const submitBtn = this.querySelector('.submit-btn');
     const originalText = submitBtn.textContent;
     
+    // Show loading state
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
     
-    // Send email using EmailJS
-    emailjs.sendForm('service_v3zdrk4', 'template_iv6dves', this)
-        .then(function() {
-            alert('Thank you! Your message has been sent successfully.');
-            document.getElementById('contactForm').reset();
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-        }, function(error) {
-            alert('Failed to send message. Please try again.');
-            console.log('EmailJS error:', error);
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+    const formData = new FormData(this);
+    formData.append("access_key", "d2d1e743-898e-4471-aff3-69237e4e982a");
+    
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
         });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Thank you! Your message has been sent successfully.');
+            this.reset();
+        } else {
+            alert('Failed to send message. Please try again.');
+            console.log('Error:', data);
+        }
+    } catch (error) {
+        alert('Failed to send message. Please try again.');
+        console.log('Error:', error);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
 });
