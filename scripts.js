@@ -39,8 +39,6 @@ document.querySelectorAll('nav a').forEach(anchor => {
     });
 });
 
-emailjs.init('Cju5bQaKBUY1yjmSi');
-
 // Contact form submission with Web3Forms
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
