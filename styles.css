@@ -317,6 +317,13 @@
             color: var(--primary);
         }
 
+        .section-title-comingsoon {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 60px;
+            color: linear-gradient(45deg, var(--primary), var(--accent));
+        }
+
         .prizes-container {
             display: flex;
             justify-content: center;
@@ -372,7 +379,13 @@
         .about-text p {
             margin-bottom: 20px;
             line-height: 1.6;
-            color: #ccc;
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .about-text strong {
+            color: var(--primary);
+            font-size: 30px;
         }
 
         .slideshow-container {
@@ -735,7 +748,7 @@
         .contact-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #057141 0%, #0ef11d 100%);
+            background: linear-gradient(135deg, rgb(0, 255, 157) 0%, rgb(5, 103, 34) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -815,7 +828,7 @@
         }
         
         .submit-btn {
-            background: linear-gradient(135deg, #35c306 0%, #044710 100%);
+            background: linear-gradient(135deg, rgb(0, 255, 157) 0%, rgb(5, 103, 34) 100%);
             color: white;
             border: none;
             padding: 14px 30px;
@@ -829,7 +842,7 @@
         
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 20px rgba(6, 136, 62, 0.3);
         }
 
         @media (max-width: 768px) {

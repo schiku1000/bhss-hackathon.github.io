@@ -62,7 +62,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
         const data = await response.json();
         
         if (data.success) {
-            alert('Thank you! Your message has been sent successfully.');
+            alert('Thank you! Your message has been sent successfully. We will respond in 48 hours.');
             this.reset();
         } else {
             alert('Failed to send message. Please try again.');
