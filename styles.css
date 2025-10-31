@@ -668,10 +668,7 @@
             filter: brightness(0) invert(1);
             transition: filter 0.3s ease;
         }
-        
-        .sponsor-item:hover img {
-            filter: brightness(1) invert(0);
-        }
+    
         
         @keyframes scroll {
             0% {
