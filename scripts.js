@@ -11,77 +11,91 @@ let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
         
 function nextSlide() {
-    slides[currentSlide].classList.remove('active');
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add('active');
+    if (slides.length > 0) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
 }
         
-setInterval(nextSlide, 3000);
+if (slides.length > 0) {
+    setInterval(nextSlide, 3000);
+}
 
 // Smooth Scrolling For Navbar
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-                
-    const targetId = this.getAttribute('href');
-    if(targetId === 'schedule.html') {
-        window.location.href = targetId;
-        return;
-    }
-                
-    const targetElement = document.querySelector(targetId);
-    if(targetElement) {
-        window.scrollTo({
-        top: targetElement.offsetTop - 80,
-        behavior: 'smooth'
-         });
+        const href = this.getAttribute('href');
+
+        if (href === 'schedule.html' || href.includes('.html')) {
+            return;
+        }
+    
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const targetElement = document.querySelector(href);
+            if(targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        }
+       
+        else if (href.includes('#')) {
+            return;
         }
     });
 });
 
 // Contact form submission with Web3Forms
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const submitBtn = this.querySelector('.submit-btn');
-    const originalText = submitBtn.textContent;
-    
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-    
-    const formData = new FormData(this);
-    formData.append("access_key", "d2d1e743-898e-4471-aff3-69237e4e982a");
-    
-    try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData
-        });
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        const data = await response.json();
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
         
-        if (data.success) {
-            alert('Thank you! Your message has been sent successfully. We will respond in 48 hours.');
-            this.reset();
-        } else {
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        
+        const formData = new FormData(this);
+        formData.append("access_key", "d2d1e743-898e-4471-aff3-69237e4e982a");
+        
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Thank you! Your message has been sent successfully. We will respond in 48 hours.');
+                this.reset();
+            } else {
+                alert('Failed to send message. Please try again.');
+                console.log('Error:', data);
+            }
+        } catch (error) {
             alert('Failed to send message. Please try again.');
-            console.log('Error:', data);
+            console.log('Error:', error);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
         }
-    } catch (error) {
-        alert('Failed to send message. Please try again.');
-        console.log('Error:', error);
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-    }
-});
+    });
+}
+
 // Menu Toggle
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
 
 if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
+    hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
         navMenu.classList.toggle('active');
     });
 
@@ -99,3 +113,26 @@ if (hamburger && navMenu) {
         }
     });
 }
+
+// URL Cleaning
+window.addEventListener('DOMContentLoaded', () => {
+    // Remove .html from URL
+    let currentPath = window.location.pathname;
+    if (currentPath.endsWith('.html')) {
+        const newPath = currentPath.replace('.html', '');
+        window.history.replaceState(null, '', newPath + window.location.search + window.location.hash);
+    }
+
+    if (window.location.hash) {
+        const hash = window.location.hash;
+        const targetElement = document.querySelector(hash);
+        if (targetElement) {
+            setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                setTimeout(() => {
+                    history.replaceState(null, null, ' ');
+                }, 100);
+            }, 100);
+        }
+    }
+});
