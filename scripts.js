@@ -26,11 +26,7 @@ if (slides.length > 0) {
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
-
-        if (href === 'schedule.html' || href.includes('.html')) {
-            return;
-        }
-    
+        
         if (href.startsWith('#')) {
             e.preventDefault();
             const targetElement = document.querySelector(href);
@@ -41,10 +37,7 @@ document.querySelectorAll('nav a').forEach(anchor => {
                 });
             }
         }
-       
-        else if (href.includes('#')) {
-            return;
-        }
+
     });
 });
 
@@ -114,25 +107,38 @@ if (hamburger && navMenu) {
     });
 }
 
-// URL Cleaning
-window.addEventListener('DOMContentLoaded', () => {
-    // Remove .html from URL
-    let currentPath = window.location.pathname;
-    if (currentPath.endsWith('.html')) {
-        const newPath = currentPath.replace('.html', '');
-        window.history.replaceState(null, '', newPath + window.location.search + window.location.hash);
-    }
-
+// Clean URL on page load
+window.addEventListener('load', () => {
     if (window.location.hash) {
         const hash = window.location.hash;
         const targetElement = document.querySelector(hash);
         if (targetElement) {
             setTimeout(() => {
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                setTimeout(() => {
-                    history.replaceState(null, null, ' ');
-                }, 100);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
             }, 100);
         }
     }
+    
+    // Clean up URL after a short delay
+    setTimeout(() => {
+        let newUrl = window.location.pathname;
+        
+        // Remove .html extension
+        if (newUrl.endsWith('.html')) {
+            newUrl = newUrl.replace('.html', '');
+        }
+        
+        // Remove trailing slash if present
+        if (newUrl.endsWith('/') && newUrl !== '/') {
+            newUrl = newUrl.slice(0, -1);
+        }
+        
+        // Update URL without hash
+        if (window.location.pathname !== newUrl || window.location.hash) {
+            window.history.replaceState(null, '', newUrl);
+        }
+    }, 500);
 });
