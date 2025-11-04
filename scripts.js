@@ -21,20 +21,20 @@ setInterval(nextSlide, 3000);
 // Smooth Scrolling For Navbar
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-                
-    const targetId = this.getAttribute('href');
-    if(targetId === 'schedule.html') {
-        window.location.href = targetId;
-        return;
-    }
-                
-    const targetElement = document.querySelector(targetId);
-    if(targetElement) {
-        window.scrollTo({
-        top: targetElement.offsetTop - 80,
-        behavior: 'smooth'
-         });
+        const targetId = this.getAttribute('href');
+
+        if(targetId.includes('.html') || targetId.startsWith('http')) {
+            return;
+        }
+        
+        e.preventDefault();
+        const targetElement = document.querySelector(targetId);
+        
+        if(targetElement) {
+            window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth'
+            });
         }
     });
 });
